@@ -1,10 +1,11 @@
 package com.example.chatrooms;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Room {
@@ -13,11 +14,14 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private ArrayList<User> users;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "room")
+    private List<User> users;
 
     public Room() {}
 
-    public Room(String name, ArrayList<User> users) {
+    public Room(String name, List<User> users) {
         this.name = name;
         this.users = users;
     }
@@ -38,7 +42,7 @@ public class Room {
         this.name = name;
     }
 
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
@@ -46,8 +50,17 @@ public class Room {
         this.users = users;
     }
 
+    public void addUser(User u) {
+        users.add(u);
+
+        if (u.getRoom() != this) u.setRoom(this);
+    }
+
     @Override
     public String toString() {
-        return "Room {" + "id=" + this.id + ", name='" + this.name + '\'' + ", users=" + this.users + '}';
+        return "Room {" +
+                   "id=" + this.id + ", " +
+                   "name='" + this.name + '\'' +  ", " +
+               '}';
     }
 }

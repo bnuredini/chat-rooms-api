@@ -21,12 +21,21 @@ public class RoomController {
     @GetMapping("/rooms/{id}")
     Room getRoom(@PathVariable Long id) {
         return repo.findById(id)
-                   .orElseThrow(() -> new RuntimeException(String.valueOf(id)));
+                   .orElseThrow(() -> new RoomNotFoundException(String.valueOf(id)));
     }
 
     @PostMapping("/rooms")
     Room createRoom(@RequestBody Room r) {
         return repo.save(r);
+    }
+
+    @PostMapping("/rooms/{id}")
+    Room addUserToRoom(@PathVariable int id, @RequestBody User u) {
+        Room r = repo.findById(Integer.toUnsignedLong(id))
+                     .orElseThrow(() -> new RoomNotFoundException(String.valueOf(id)));
+        r.addUser(u);
+
+        return r;
     }
 
     @DeleteMapping("/rooms/{id}")
