@@ -1,18 +1,24 @@
 package com.example.chatrooms;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private String role;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     public User() {}
 
@@ -45,8 +51,21 @@ public class User {
         this.role = role;
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
     public String toString() {
-        return "User {" + "id=" + this.id + ", username='" + this.username + '\'' + ", role=" + this.role + '}';
+        return "User {" +
+                   "id=" + this.id + ", " +
+                   "username='" + this.username + '\'' +  ", " +
+                   "role=" + this.role + ", " +
+                   "room=" + this.room +
+               '}';
     }
 }

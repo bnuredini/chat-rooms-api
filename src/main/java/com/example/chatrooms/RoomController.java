@@ -21,7 +21,7 @@ public class RoomController {
     @GetMapping("/rooms/{id}")
     Room getRoom(@PathVariable Long id) {
         return repo.findById(id)
-                   .orElseThrow(() -> new RuntimeException(String.valueOf(id)));
+                   .orElseThrow(() -> new RoomNotFoundException(String.valueOf(id)));
     }
 
     @PostMapping("/rooms")
