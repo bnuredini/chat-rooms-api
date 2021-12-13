@@ -1,11 +1,6 @@
 package com.example.chatrooms;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Room {
@@ -15,15 +10,10 @@ public class Room {
     private Long id;
     private String name;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "room")
-    private List<User> users;
-
     public Room() {}
 
-    public Room(String name, List<User> users) {
+    public Room(String name) {
         this.name = name;
-        this.users = users;
     }
 
     public Long getId() {
@@ -40,20 +30,6 @@ public class Room {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
-
-    public void addUser(User u) {
-        users.add(u);
-
-        if (u.getRoom() != this) u.setRoom(this);
     }
 
     @Override

@@ -29,15 +29,6 @@ public class RoomController {
         return repo.save(r);
     }
 
-    @PostMapping("/rooms/{id}")
-    Room addUserToRoom(@PathVariable int id, @RequestBody User u) {
-        Room r = repo.findById(Integer.toUnsignedLong(id))
-                     .orElseThrow(() -> new RoomNotFoundException(String.valueOf(id)));
-        r.addUser(u);
-
-        return r;
-    }
-
     @DeleteMapping("/rooms/{id}")
     ResponseEntity<?> deleteRoom(@PathVariable Long id) {
         repo.deleteById(id);

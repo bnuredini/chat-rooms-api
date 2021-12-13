@@ -1,6 +1,7 @@
 package com.example.chatrooms;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,8 +15,8 @@ public class User implements Serializable {
     private String username;
     private String role;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "room_id")
     private Room room;
 
@@ -56,8 +57,6 @@ public class User implements Serializable {
 
     public void setRoom(Room room) {
         this.room = room;
-
-        if (!room.getUsers().contains(this)) room.getUsers().add(this);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class User implements Serializable {
                    "id=" + this.id + ", " +
                    "username='" + this.username + '\'' +  ", " +
                    "role=" + this.role + ", " +
-//                   "room=" + this.room +
+                   "room=" + this.room +
                '}';
     }
 }
