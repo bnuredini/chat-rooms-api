@@ -7,9 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.util.Streamable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 @Configuration
 public class LoadDb {
 
@@ -22,14 +19,8 @@ public class LoadDb {
             User u2 = new User("user2", "client");
             User u3 = new User("user3", "wizard");
 
-//            Room r1 = new Room("Movie club", new ArrayList<>());
-//            Room r2 = new Room("Book club", new ArrayList<>());
             Room r1 = new Room("Movie club");
             Room r2 = new Room("Book club");
-
-//            r1.addUser(u1);
-//            r1.addUser(u2);
-//            r2.addUser(u3);
 
             if (Streamable.of(roomRepository.findAll()).toList().size() == 0) {
                 log.info("Preloading a room: " + roomRepository.save(r1));
